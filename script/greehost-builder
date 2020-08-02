@@ -1,0 +1,26 @@
+#!/usr/bin/env perl
+use GreeHost::Builder::Config;
+use Module::Runtime qw( use_module );
+use Try::Tiny;
+
+my @TARGETS = qw( StaticServ );
+
+my $config = GreeHost::Builder::Config->new();
+
+
+foreach my $block ( @{ $config->data } ) {
+    my $target = $block->{target};
+
+    next unless scalar grep { $target eq $_ } @TARGETS;
+
+    print "Running $target\n";
+
+    my $result = try {
+        use_module("GreeHost::Builder::$target")->build( $block, $config->system );
+    } catch {
+        # Warning, this target doesn't exist.
+        warn "Failed to load $target: $_";
+    };
+
+}
+
