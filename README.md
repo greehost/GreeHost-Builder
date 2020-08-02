@@ -6,11 +6,10 @@ This should be installed on a freshly provisioned CentOS 7 minimal install.  SSH
 
 ```bash
 # Install epel-release, update software, install cpanm
-yum install -y epel-release; yum update; yum -y upgrade; yum install -y perl-App-cpanminus
+yum install -y epel-release; yum update; yum -y upgrade; yum install -y perl-App-cpanminus perl-core
 
 # Install GreeHost::Builder
-# Fatal is an undeclared dependancy for Text::Xslate, failure to include it causes the build to fail (Report to xslate/p5-Text-Xslate).
-cpanm Fatal GreeHost-Builder-0.001.tar.gz
+cpanm GreeHost-Builder-0.001.tar.gz
 
 # Generate a passwordless SSH keypair for Builder -> StaticServ communication
 ssh-keygen -t rsa -b 4096
@@ -45,11 +44,9 @@ Add a file in the root of the project directory called `project.jsony`:
 }
 ```
 
-|---------|----------------------------|-------------------------|----------|---------|
 | Name    | Purpose                    | Value                   | Required | Default |
 |---------|----------------------------|-------------------------|----------|---------|
 | root    | The HTML webroot to serve, | Relative Directory Path | Yes      |         |
 | use_ssl | Enable SSL configuration   | Boolean                 | Yes      |         |
-|---------|----------------------------|-------------------------|----------|---------|
 
 
