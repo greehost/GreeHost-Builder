@@ -2,13 +2,15 @@ package GreeHost::Builder::Config;
 use Moo;
 use YAML::XS qw( LoadFile );
 use JSONY;
+use JSON::MaybeXS qw( decode_json );
 use Try::Tiny;
 use File::Slurper qw( read_text );
+use IPC::Run3;
 
 has config_file => (
     is      => 'ro',
     isa     => sub { -e $_[0] },
-    default => sub { 'project.jsony' },
+    default => sub { './.greehost.json' },
 );
 
 has system_file => (
@@ -32,7 +34,8 @@ has system => (
 sub _build_data {
     my ( $self ) = @_;
 
-    return JSONY->new->load( read_text( $self->config_file ) );
+    run3([qw( greehost-builder-config-reader )]);
+    return decode_json( read_text( $self->config_file ) );
 }
 
 sub _build_system {
@@ -40,20 +43,5 @@ sub _build_system {
 
     return JSONY->new->load( read_text( $self->system_file ) );
 }
-
-# sub _build_system {
-
-# }
-
-# sub _build_data {
-#     my ( $self ) = @_;
-
-#     open my $lf, "<", $self->config_file
-#         or die "Failed to read config file $self->config_file: $_\n";
-#     my $content = do { local $/; <$lf> };
-#     close $lf;
-
-#     return JSONY->new->load( $content );
-# }
 
 1;

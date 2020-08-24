@@ -1,0 +1,17 @@
+#!/usr/bin/env perl
+use warnings;
+use strict;
+use JSON::MaybeXS qw( encode_json );
+
+my @configs;
+
+sub DockerRun  { push @configs, { target => 'DockerRun',  @_ } } 
+sub StaticServ { push @configs, { target => 'StaticServ', @_ } } 
+
+
+do './.greehost';
+
+open my $sf, ">", "./.greehost.json"
+    or die "Failed to open ./.greehost.json for writing: $!";
+print $sf encode_json( [ @configs ] );
+close $sf;
