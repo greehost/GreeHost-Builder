@@ -3,7 +3,7 @@ use GreeHost::Builder::Config;
 use Module::Runtime qw( use_module );
 use Try::Tiny;
 
-my @TARGETS = qw( StaticServ );
+my @TARGETS = qw( StaticServ DockerRun );
 
 my $config = GreeHost::Builder::Config->new();
 
